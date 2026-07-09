@@ -2,7 +2,7 @@
 
 Système embarqué autonome capable d'acquérir, enregistrer, afficher et transmettre des données environnementales à partir de plusieurs capteurs, construit autour d'un microcontrôleur ESP32-C3.
 
-![Photo du prototype](docs/Images/prototype fonctionnel.jpg)
+(docs/Images/prototype fonctionnel.jpg)
 
 ---
 
@@ -14,7 +14,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 
 ## Architecture du système
 
-![Schéma de l'architecture fonctionnelle](docs/Schéma fonctionnel-EasyEDA)
+(docs/Schéma fonctionnel-EasyEDA.pdf)
 
 
 ### Composants principaux
