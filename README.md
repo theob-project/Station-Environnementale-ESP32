@@ -69,12 +69,3 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 
 ---
 
-## Structure du dépôt
-
-```
-├── firmware/          # Code source C pour l'ESP32-C3
-├── docs/
-│   ├── images/         # Schémas et photos du montage
-├── analysis/          # Scripts Python d'analyse des données
-└── README.md
-```
