@@ -27,7 +27,7 @@ Architecture logicielle en composants séparés, protocoles I2C et SPI, Wi-Fi, s
 ### Matériel de prototypage
 
 - Plaque de montage rapide 2420 contacts BB3T5D (Gotronic 12304) montée sur support
-- Pack de câbles Dupont M/M et F/F codés par couleur (rouge=3V3, noir=GND, jaune=SCL, vert=SDA)
+- Pack de câbles Dupont M/M et F/F codés par couleur (rouge=3V3, noir=GND, orange=SCL, vert=SDA)
 
 ---
 
