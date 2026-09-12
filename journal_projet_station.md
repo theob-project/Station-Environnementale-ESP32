@@ -48,6 +48,7 @@ station_env/
 │   ├── oled_ssd1306/       ← afficheur OLED avec framebuffer
 │   ├── sd_card/            ← stockage CSV sur carte SD (SPI)
 │   └── wifi_sender/        ← connexion Wi-Fi + envoi HTTP
+│   └── NTP_Sync/           ← synchronisation horaire sur internet
 ├── partitions.csv          ← table de partitions personnalisée
 └── CMakeLists.txt
 ```
@@ -199,6 +200,16 @@ La RAM utilisée reste constante à 512 octets quelle que soit la taille du fich
 
 ---
 
+### 3.11 Heure RTC désynchronisée
+
+**Problème** : à cause du cumul de délais entre le lancement du build, du flash, puis de l'ESP32, l'heure stockée dans la pile du RTC était décalée de plusieurs heures avec la réalité.
+
+**Solution** : ajouter une fonction "NTP_Sync" pour qu'à chaque redémarrage ou implémentation de code l'heure soit recalculée à la milliseconde près via le Network Time Protocol.
+
+**Piège** : la récupération de l'heure exacte dépend de la disponibilité du wifi.
+
+---
+
 ## 4. Points techniques notables
 
 ### Bus I2C partagé
@@ -227,7 +238,8 @@ Le SSD1306 organise sa mémoire en pages de 8 pixels de haut. L'approche framebu
 ## 5. Stratégie de données
 
 ### Fichier CSV quotidien
-Un fichier par jour nommé `mesures_YYYY-MM-DD.csv`, créé automatiquement à la première mesure de chaque journée. La rotation est implicite : à minuit, la date change, `sd_card_get_daily_path()` retourne un nouveau nom de fichier.
+
+Un fichier par jour nommé `mesures_YYYY-MM-DD.csv`, créé automatiquement à la première mesure de chaque journée. Toutes les heures les nouvelles mesures sont envoyées et ajoutées au fichier du jour correspondant. La rotation est implicite : à minuit, la date change, `sd_card_get_daily_path()` retourne un nouveau nom de fichier.
 
 ### Format CSV
 ```
@@ -236,10 +248,17 @@ timestamp,temperature,humidity,pressure,lux
 ```
 
 ### Envoi Wi-Fi
+
 - Connexion au réseau domestique en mode station (STA)
 - Résolution du serveur Python via mDNS (`station-receiver.local`)
 - Envoi HTTP POST toutes les heures en streaming par blocs de 512 octets
 - Le serveur Python (Flask + zeroconf) sauvegarde chaque réception avec un horodatage
+
+### Analyse graphique des données
+
+- Lancement du script "Analyse_journee.py"
+- Récupération des fichiers csv présents dans le dossier "mesures_recues"
+- Génération du graphique et des statistiques globales de la journée dans le terminal
 
 ---
 
@@ -257,7 +276,6 @@ timestamp,temperature,humidity,pressure,lux
 
 ## 7. Évolutions prévues
 
-- Traitement et visualisation des données CSV en Python (Pandas, Matplotlib)
-- Migration vers PCB définitif avec puces nues (ajout pull-up I2C, condensateurs de découplage 100nF par puce)
+- Migration vers PCB définitif avec puces nues (ajout condensateurs de découplage 100nF par puce)
 - Automatisation du serveur Python au démarrage via service systemd
 - Hébergement potentiel du serveur sur Raspberry Pi 5 pour fonctionnement permanent
