@@ -12,44 +12,9 @@
 #include "oled_ssd1306.h"
 #include "sd_card.h"
 #include "wifi_sender.h"
+#include "NTP_Sync.h"
 
 static const char *TAG = "main";
-
-// Construit une struct tm à partir des macros __DATE__ et __TIME__
-// (remplies automatiquement par le compilateur à la compilation).
-static struct tm get_compile_time(void)
-{
-    char compile_date[] = __DATE__;
-    char compile_time[] = __TIME__;
-
-    struct tm t = {0};
-    char month_str[4];
-    int day, year, hour, min, sec;
-
-    sscanf(compile_date, "%s %d %d", month_str, &day, &year);
-    sscanf(compile_time, "%d:%d:%d", &hour, &min, &sec);
-
-    const char *months[] = {"Jan","Feb","Mar","Apr","May","Jun",
-                             "Jul","Aug","Sep","Oct","Nov","Dec"};
-    int month = 0;
-    for (int i = 0; i < 12; i++) {
-        if (strncmp(month_str, months[i], 3) == 0) {
-            month = i + 1;
-            break;
-        }
-    }
-
-    t.tm_year = year - 1900;
-    t.tm_mon  = month - 1;
-    t.tm_mday = day;
-    t.tm_hour = hour;
-    t.tm_min  = min;
-    t.tm_sec  = sec;
-    t.tm_isdst = -1;
-
-    time_t epoch = mktime(&t); // calcule notamment tm_wday automatiquement
-    return *localtime(&epoch);
-}
 
 void app_main(void)
 {
@@ -66,9 +31,9 @@ void app_main(void)
     wifi_sender_init();
     
 
-    // 3. Règle l'heure une seule fois, au premier démarrage.
-    struct tm compile_time = get_compile_time();
-    ds3231_set_time(&compile_time);
+  if (!ntp_sync()) {
+    ESP_LOGW(TAG, "Heure RTC conservee sans recalage NTP");
+}
 
     vTaskDelay(pdMS_TO_TICKS(500));
 

@@ -2,7 +2,7 @@
 
 Système embarqué autonome capable d'acquérir, enregistrer, afficher et transmettre des données environnementales à partir de plusieurs capteurs, construit autour d'un microcontrôleur ESP32-C3.
 
-![Photo du prototype](docs/images/prototype-fonctionnel.jpg)
+![Photo du prototype](docs/images/Prototype-fonctionnel.jpg)
 
 ---
 
@@ -47,6 +47,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 - Enregistrement des données sur support mémoire (carte SD)
 - Affichage local des informations collectées sur écran OLED
 - Transmission du fichier de mesures via Wi-Fi local
+- Analyse graphique des données à l'aide des bibliothèques Pandas et Matplotlib
 
 ---
 
@@ -65,7 +66,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 
 - [ ] Tableau de bord Python pour visualisation des données
 - [ ] PCB
-- [ ] Alimentation autonome (batterie / solaire)
+- [ ] Alimentation autonome
 
 ---
 
