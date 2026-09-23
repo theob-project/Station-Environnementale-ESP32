@@ -18,3 +18,9 @@ void oled_draw_text(uint8_t col, uint8_t line, const char *text);
 // changements visibles d'un coup (évite un affichage qui clignote
 // ligne par ligne).
 void oled_refresh(void);
+
+// Eteint l'affichage sans effacer le framebuffer
+// oled_refresh après oled_draw_text le rallume
+void oled_power_off(void);
+
+void oled_power_on(void);

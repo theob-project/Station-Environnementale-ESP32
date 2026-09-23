@@ -22,7 +22,6 @@ Architecture logicielle en composants séparés, protocoles I2C et SPI, Wi-Fi, s
 
 - **Bus I2C partagé** : SDA → GPIO4, SCL → GPIO5
 - **Bus SPI (carte SD)** : MISO → GPIO2, MOSI → GPIO7, SCLK → GPIO6, CS → GPIO10
-- **Pull-up I2C** : 2x 2.2kΩ entre 3V3 et SDA/SCL (une seule paire pour tout le bus)
 
 ### Matériel de prototypage
 
@@ -213,7 +212,7 @@ La RAM utilisée reste constante à 512 octets quelle que soit la taille du fich
 ## 4. Points techniques notables
 
 ### Bus I2C partagé
-Un seul bus I2C peut alimenter plusieurs périphériques simultanément. Une seule paire de résistances de pull-up (2.2kΩ vers 3V3) suffit pour tout le bus.
+Un seul bus I2C peut alimenter plusieurs périphériques simultanément. Les modules sur breadboard embarquent leurs condensateurs de découplage et leurs résistances de pull-up internes.
 
 ### Broche CSB du BME280
 La pin CSB dispose d'une résistance de pull-up interne qui la maintient au niveau haut par défaut, ce qui force le mode I2C sans qu'aucune connexion externe soit nécessaire. La laisser non connectée est donc le comportement normal et suffisant.
@@ -228,10 +227,17 @@ Le BME280 grave des coefficients de calibration uniques en usine dans ses regist
 Le DS3231 stocke les valeurs de temps en BCD (Binary Coded Decimal) plutôt qu'en binaire classique. Les conversions `dec_to_bcd` et `bcd_to_dec` sont indispensables pour lire et écrire l'heure correctement.
 
 ### Heure de compilation
-Les macros `__DATE__` et `__TIME__` sont remplacées par le compilateur au moment de la compilation par la date et l'heure exactes. Elles permettent de régler automatiquement le RTC sans saisie manuelle à chaque flash.
+Les macros `__DATE__` et `__TIME__` utilisées en début de projet ont été remplacées par une synchronisation NTP (Network Time Protocol). Cette synchronisation est initialisée par l'esp32 via wifi au lancement puis la date et l'heure sont communiquées au module RTC.
 
 ### Framebuffer OLED
 Le SSD1306 organise sa mémoire en pages de 8 pixels de haut. L'approche framebuffer (dessiner en RAM puis envoyer tout l'écran d'un coup) évite un affichage qui scintille ligne par ligne et réduit le nombre de transactions I2C.
+
+### Gestion de l'énergie
+Modification de la fréquence de mesure, une toutes les 5s devient une toutes les 5 minutes.
+Extinction de l'écran OLED 60s après l'affichage de la dernière mesure.
+Mise en mode "light sleep"de l'esp32 : CPU off entre les mesures/RTC on/RAM conservée
+Réveil auto après timer, le bus I2C reprend là où il s'est arrêté.
+Conso typique ≃ 0.8 mA.
 
 ---
 
@@ -276,6 +282,6 @@ timestamp,temperature,humidity,pressure,lux
 
 ## 7. Évolutions prévues
 
-- Migration vers PCB définitif avec puces nues (ajout condensateurs de découplage 100nF par puce)
+- Migration vers PCB définitif avec puces nues, ajout : condensateurs de découplage 100nF par puce, 10uF supplémentaires pour la carte SD et le module wifi de l'esp32, résistances de pull-up externe de 2.2kΩ
 - Automatisation du serveur Python au démarrage via service systemd
 - Hébergement potentiel du serveur sur Raspberry Pi 5 pour fonctionnement permanent

@@ -150,3 +150,13 @@ void oled_refresh(void)
 
     ESP_ERROR_CHECK(i2c_master_transmit(dev_handle, buf, sizeof(buf), 1000));
 }
+
+void oled_power_off(void)
+{
+    send_command(0xAE); // commande SSD1306 : display OFF
+}
+
+void oled_power_on(void)
+{
+    send_command(0xAF);
+}

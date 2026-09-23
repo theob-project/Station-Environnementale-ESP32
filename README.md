@@ -2,13 +2,17 @@
 
 Système embarqué autonome capable d'acquérir, enregistrer, afficher et transmettre des données environnementales à partir de plusieurs capteurs, construit autour d'un microcontrôleur ESP32-C3.
 
-![Photo du prototype](docs/images/Prototype-fonctionnel.jpg)
+![Video du prototype](video_compressee.mp4)
+
+![Graphique analyse donnees](docs/images/Analyse_donnees.png)
+
+![Stats globales](docs/images/Stats globales.png)
 
 ---
 
 ## Objectif du projet
 
-Concevoir une station capable d'acquérir, enregistrer et exploiter des données environnementales à partir de plusieurs capteurs (température, humidité, pression, luminosité), avec horodatage, stockage local et transmission des données via Wi-Fi.
+Concevoir une station capable d'acquérir, enregistrer et exploiter des données environnementales à partir de plusieurs capteurs (température, humidité, pression, luminosité), avec horodatage, stockage local, transmission des données via Wi-Fi et gestion de la consommation d'énergie.
 
 ---
 
@@ -32,7 +36,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 
 ## Technologies utilisées
 
-- **Protocoles de communication :** UART, I2C, SPI, Wi-Fi
+- **Protocoles de communication :** UART, I2C, SPI, Wi-Fi, NTP
 - **Affichage et enregistrement :** OLED / MicroSD / RTC
 - **Microcontrôleur :** ESP32-C3 DevKitM-1
 - **Langages :** C (firmware embarqué) / Python (analyse des données)
@@ -48,6 +52,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 - Affichage local des informations collectées sur écran OLED
 - Transmission du fichier de mesures via Wi-Fi local
 - Analyse graphique des données à l'aide des bibliothèques Pandas et Matplotlib
+- Gestion de la consommation d'énergie à l'aide du mode "light sleep" entre chaque mesure
 
 ---
 
@@ -56,6 +61,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 - Conception et câblage d'un système électronique multi-capteurs (breadboard, bus I2C/SPI)
 - Développement firmware en C sur microcontrôleur ESP32
 - Gestion de protocoles de communication série (UART/I2C/SPI)
+- Gestion de protocole de communication réseau (NTP)
 - Lecture/écriture sur support mémoire embarqué
 - Traitement et transmission de données via Wi-Fi
 - Analyse de données en Python
@@ -64,7 +70,7 @@ Concevoir une station capable d'acquérir, enregistrer et exploiter des données
 
 ## Évolutions prévues
 
-- [ ] Tableau de bord Python pour visualisation des données
+- [x] Tableau de bord Python pour visualisation des données
 - [ ] PCB
 - [ ] Alimentation autonome
 
