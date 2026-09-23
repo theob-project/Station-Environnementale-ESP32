@@ -2,7 +2,7 @@
 
 Système embarqué autonome capable d'acquérir, enregistrer, afficher et transmettre des données environnementales à partir de plusieurs capteurs, construit autour d'un microcontrôleur ESP32-C3.
 
-![Video du prototype](docs/images/video_compressee.mp4)
+[![Video du prototype](docs/images/Miniature_video.png)](docs/images/video_compressee.mp4)
 
 ![Graphique analyse donnees](docs/images/Analyse_donnees.png)
 
